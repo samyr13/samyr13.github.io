@@ -10,7 +10,7 @@ export function Skills() {
     <section
       id="competences"
       data-memoji="0.15,0.66,0.62,1"
-      data-memoji-m="0.8,0.1,0.4,0"
+      data-memoji-m="0.84,0.905,0.32,1"
       className="relative mx-auto max-w-[1600px] px-6 py-32 md:px-10 lg:pl-28"
     >
       <div className="grid gap-12 lg:grid-cols-[30%_1fr]">
@@ -30,7 +30,7 @@ export function Skills() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: '0px 0px -8% 0px' }}
                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1], delay: i * 0.04 }}
-                className="group relative grid grid-cols-[3rem_1fr] items-baseline gap-x-4 gap-y-3 border-b hairline py-7 md:grid-cols-[4rem_minmax(0,0.9fr)_minmax(0,1.3fr)]">
+                className="group relative grid grid-cols-[3rem_minmax(0,1fr)] items-baseline gap-x-4 gap-y-3 border-b hairline py-7 md:grid-cols-[4rem_minmax(0,0.9fr)_minmax(0,1.3fr)]">
                 <span className="pointer-events-none absolute inset-0 origin-bottom scale-y-0 bg-gradient-to-r from-ember/[0.07] to-transparent transition-transform duration-500 ease-out-expo group-hover:scale-y-100" />
                 <span className="relative font-mono text-[12px] text-ash transition-colors group-hover:text-ember">
                   {String(i + 1).padStart(2, '0')}
@@ -40,7 +40,7 @@ export function Skills() {
                 </h3>
                 <p className="relative col-start-2 text-[15px] text-dust md:col-start-auto md:text-right">
                   {s.items.map((it, k) => (
-                    <span key={it} className="transition-colors duration-300 group-hover:text-bone">
+                    <span key={it} className="inline-block whitespace-nowrap transition-colors duration-300 group-hover:text-bone">
                       {it}
                       {k < s.items.length - 1 && <span className="mx-2 text-ash">/</span>}
                     </span>
@@ -71,7 +71,7 @@ export function Github() {
     <section
       id="github"
       data-memoji="0.8,0.48,0.78,1"
-      data-memoji-m="0.8,0.1,0.4,0"
+      data-memoji-m="0.84,0.905,0.32,1"
       className="relative mx-auto max-w-[1600px] px-6 py-32 md:px-10 lg:pl-28"
     >
       <div className="lg:w-[60%]">

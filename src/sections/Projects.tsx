@@ -199,7 +199,7 @@ export function Projects() {
 
   if (!desktop) {
     return (
-      <section id="projets" data-memoji="0.84,0.12,0.4,0" className="relative px-6 py-28 md:px-10">
+      <section id="projets" data-memoji="0.84,0.12,0.4,0" data-memoji-m="0.84,0.905,0.32,1" className="relative px-6 py-28 md:px-10">
         <Intro />
         <div className="mt-16 flex flex-col gap-20">
           {projects.map((p) => (
@@ -217,6 +217,7 @@ export function Projects() {
       id="projets"
       ref={section}
       data-memoji="0.1,0.885,0.27,1,0.86"
+      data-memoji-m="0.84,0.905,0.32,1"
       className="relative"
       style={{ height: `calc(100vh + ${dist}px)` }}
     >

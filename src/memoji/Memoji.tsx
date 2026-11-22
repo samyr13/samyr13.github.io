@@ -73,6 +73,8 @@ export function Memoji() {
     let overHead = false
     let bubbleOn = false
     let layerFront = false
+    let lastSY = scrollY
+    let scrollLook = 0
     const st: AvatarState = { yaw: 0, pitch: 0, smile: 0, blink: 0, talk: 0, ai: 0, spin: 0, shades: 0, t: 0 }
     const written = { x: 1e9, y: 1e9, s: 1e9, o: 1e9 }
     const drawn = { yaw: 1e9, pitch: 1e9, smile: 1e9, blink: 1e9, talk: 1e9, ai: 1e9, spin: 1e9, shades: 1e9 }
@@ -147,9 +149,15 @@ export function Memoji() {
         layer.style.zIndex = aiOpen ? '56' : '20'
       }
 
-      // direction du regard
-      const idle = !finePointer || now - pointer.lastMove > 4500
+      // direction du regard (souris, ou doigt pendant 2,5 s sur écran tactile)
+      const idle = now - pointer.lastMove > (finePointer ? 4500 : 2500)
       const size = base * ps
+      // vitesse de scroll → la tête suit le défilement (lève / baisse les yeux)
+      const sy = scrollY
+      const sv = dtMs > 0 ? (sy - lastSY) / dtMs : 0
+      lastSY = sy
+      scrollLook += (clamp(sv * 0.35, -0.7, 0.7) - scrollLook) * (1 - Math.exp(-dt * 6))
+      if (Math.abs(scrollLook) < 0.001) scrollLook = 0
       let yawT: number, pitchT: number
       if (idle) {
         const t = now / 1000
@@ -160,6 +168,7 @@ export function Memoji() {
         yawT = clamp((pointer.x - px) / (vw * 0.32), -1, 1)
         pitchT = clamp((pointer.y - py) / (vh * 0.4), -1, 1)
       }
+      if (!aiOpen) pitchT = clamp(pitchT + scrollLook, -1, 1)
       if (reducedMotion) { yawT *= 0.4; pitchT *= 0.4 }
       const k = 60, c = 2 * Math.sqrt(k) * 0.85
       vYaw += ((yawT - st.yaw) * k - vYaw * c) * dt
@@ -239,7 +248,7 @@ export function Memoji() {
 
       // sommeil quand tout est stable (et pas en mode "regard libre" / IA / animation)
       const settled =
-        !idle && !blinking && !dirty && st.ai === 0 && st.spin === 0 && st.talk < 0.002 &&
+        !idle && !blinking && !dirty && scrollLook === 0 && st.ai === 0 && st.spin === 0 && st.talk < 0.002 &&
         (st.shades === 0 || st.shades === 1) &&
         Math.abs(tx - px) < 0.1 && Math.abs(ty - py) < 0.1 && Math.abs(target.s - ps) < 0.001 &&
         Math.abs(target.o - po) < 0.003 && Math.abs(vYaw) + Math.abs(vPitch) < 0.002 &&
@@ -339,13 +348,13 @@ export function Memoji() {
         />
         <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
         {/* bulle d'invitation */}
-        <div className="absolute -top-[3%] left-1/2 -translate-x-1/2">
+        <div className="absolute -bottom-[2%] left-1/2 -translate-x-1/2 md:top-[-3%] md:bottom-auto">
         <div
           ref={bubbleRef}
-          className="origin-bottom rounded-2xl border border-ember/40 bg-ink-2/95 px-3.5 py-2 font-mono text-[11px] leading-tight whitespace-nowrap text-bone opacity-0 transition-[opacity,transform] duration-500 ease-out-expo"
+          className="origin-top rounded-2xl md:origin-bottom border border-ember/40 bg-ink-2/95 px-3.5 py-2 font-mono text-[11px] leading-tight whitespace-nowrap text-bone opacity-0 transition-[opacity,transform] duration-500 ease-out-expo"
           style={{ transform: 'translate3d(0,8px,0) scale(.92)' }}
         >
-          <span className="text-ember">●</span> Clique-moi, je suis l’IA de Samy
+          <span className="text-ember">●</span> {finePointer ? 'Clique-moi' : 'Appuie sur moi'}, je suis l’IA de Samy
         </div>
         </div>
       </div>

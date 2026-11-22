@@ -34,6 +34,30 @@ addEventListener(
   { passive: true },
 )
 
+// Écran tactile : le memoji suit le doigt (toucher + glisser), puis reprend son regard libre
+const onTouch = (e: TouchEvent) => {
+  const t = e.touches[0]
+  if (!t) return
+  pointer.x = t.clientX
+  pointer.y = t.clientY
+  pointer.lastMove = performance.now()
+  wake()
+}
+addEventListener('touchstart', onTouch, { passive: true })
+addEventListener('touchmove', onTouch, { passive: true })
+let smileOff = 0
+addEventListener(
+  'touchend',
+  () => {
+    clearTimeout(smileOff)
+    smileOff = window.setTimeout(() => {
+      pointer.smile = 0
+      wake()
+    }, 900)
+  },
+  { passive: true },
+)
+
 addEventListener(
   'pointerover',
   (e) => {
@@ -56,6 +80,10 @@ export function initScroll() {
   lenis = new Lenis({ autoRaf: true, lerp: 0.085, smoothWheel: true, anchors: { offset: 0 } })
   lenis.on('scroll', wake)
   return lenis
+}
+export function destroyScroll() {
+  lenis?.destroy()
+  lenis = null
 }
 addEventListener('scroll', wake, { passive: true })
 

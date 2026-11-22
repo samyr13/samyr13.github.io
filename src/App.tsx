@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { Cursor, Nav, SocialRail } from './components/Chrome'
 import { Memoji } from './memoji/Memoji'
-import { initScroll } from './lib/runtime'
+import { destroyScroll, initScroll } from './lib/runtime'
 import { Hero } from './sections/Hero'
 import { About, Journey } from './sections/About'
 import { Projects } from './sections/Projects'
@@ -12,7 +12,7 @@ import { EasterEggs } from './components/EasterEggs'
 
 export default function App() {
   useEffect(() => {
-    const lenis = initScroll()
+    initScroll()
     // Moniteur FPS uniquement en développement
     if (import.meta.env.DEV) {
       import('stats.js').then(({ default: Stats }) => {
@@ -26,7 +26,7 @@ export default function App() {
         requestAnimationFrame(loop)
       })
     }
-    return () => lenis?.destroy()
+    return destroyScroll
   }, [])
 
   return (

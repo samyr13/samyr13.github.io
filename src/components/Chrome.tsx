@@ -52,6 +52,7 @@ const links = [
 /* ---------------- Navigation ---------------- */
 export function Nav() {
   const [copied, setCopied] = useState(false)
+  const [menu, setMenu] = useState(false)
   const { scrollYProgress } = useScroll()
   const progress = useSpring(scrollYProgress, { stiffness: 200, damping: 40, restDelta: 0.001 })
   const copy = () => {
@@ -62,7 +63,37 @@ export function Nav() {
   }
   return (
     <header className="fixed inset-x-0 top-0 z-50">
-      <div className="pointer-events-none absolute inset-0 -bottom-10 bg-gradient-to-b from-ink via-ink/70 to-transparent" />
+      <div className="pointer-events-none absolute inset-0 -bottom-8 bg-gradient-to-b from-ink from-55% to-transparent md:-bottom-10 md:from-0% md:via-ink/70" />
+      {/* menu plein écran (mobile) */}
+      <div
+        className={cn(
+          'fixed inset-0 bg-ink/97 transition-opacity duration-300 md:hidden',
+          menu ? 'opacity-100' : 'pointer-events-none opacity-0',
+        )}
+        aria-hidden={!menu}
+      >
+        <ul className="flex h-full flex-col justify-center gap-2 px-6">
+          {links.map((l, i) => (
+            <li key={l.id}>
+              <a
+                href={`#${l.id}`}
+                tabIndex={menu ? 0 : -1}
+                onClick={(e) => {
+                  e.preventDefault()
+                  setMenu(false)
+                  scrollToId(l.id)
+                }}
+                className="flex items-baseline gap-4 py-2 font-wide text-[2.6rem] leading-none font-semibold tracking-[-0.02em] transition-[opacity,transform] duration-500 ease-out-expo"
+                style={{ transform: menu ? 'none' : 'translate3d(0,16px,0)', opacity: menu ? 1 : 0, transitionDelay: menu ? `${80 + i * 50}ms` : '0ms' }}
+              >
+                <span className="font-mono text-xs text-ember">0{i + 1}</span>
+                {l.label}
+              </a>
+            </li>
+          ))}
+          <li className="mt-8 font-mono text-[13px] text-dust">{profile.email}</li>
+        </ul>
+      </div>
       <nav className="relative mx-auto flex h-20 max-w-[1600px] items-center justify-between px-5 md:px-10">
         <div className="flex items-center gap-4">
           {/* triple-clic = easter egg (lunettes de soleil) */}
@@ -133,6 +164,15 @@ export function Nav() {
           >
             CV
           </a>
+          <button
+            onClick={() => setMenu((m) => !m)}
+            aria-label={menu ? 'Fermer le menu' : 'Ouvrir le menu'}
+            aria-expanded={menu}
+            className="relative grid h-10 w-10 place-items-center rounded-full border border-bone/20"
+          >
+            <span className={cn('absolute h-px w-4 bg-bone transition-transform duration-300', menu ? 'rotate-45' : '-translate-y-[3px]')} />
+            <span className={cn('absolute h-px w-4 bg-bone transition-transform duration-300', menu ? '-rotate-45' : 'translate-y-[3px]')} />
+          </button>
         </div>
       </nav>
       <motion.div style={{ scaleX: progress }} className="absolute inset-x-0 top-0 h-[2px] origin-left bg-ember" />

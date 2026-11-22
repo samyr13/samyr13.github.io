@@ -19,8 +19,8 @@ export function About() {
     <section
       id="apropos"
       data-memoji="0.77,0.5,0.95,1"
-      data-memoji-m="0.8,0.16,0.42,0"
-      className="relative mx-auto flex min-h-[110vh] max-w-[1600px] items-center px-6 py-32 md:px-10 lg:pl-28"
+      data-memoji-m="0.84,0.905,0.32,1"
+      className="relative mx-auto flex max-w-[1600px] items-center px-6 py-24 md:min-h-[110vh] md:py-32 md:px-10 lg:pl-28"
     >
       <div className="w-full lg:w-[58%]">
         <Label n="01">À propos</Label>
@@ -50,8 +50,8 @@ export function Journey() {
     <section
       id="parcours"
       data-memoji="0.2,0.55,0.72,1"
-      data-memoji-m="0.8,0.12,0.4,0"
-      className="relative mx-auto max-w-[1600px] px-6 py-32 md:px-10 lg:pl-28"
+      data-memoji-m="0.84,0.905,0.32,1"
+      className="relative mx-auto max-w-[1600px] px-6 py-24 md:px-10 md:py-32 lg:pl-28"
     >
       <div className="lg:ml-[38%]">
         <Label n="02">Parcours</Label>
