@@ -62,7 +62,7 @@ export function Hero() {
             technologies
           </p>
           <p className="mt-2 text-[clamp(1.1rem,1.8vw,1.9rem)] font-light text-bone/80">
-            &amp; le développement d’<span className="text-ember">IA</span>
+            &amp; la création de <span className="text-ember">projets</span>
           </p>
           <p className="mt-5 font-mono text-[12px] tracking-wide text-dust uppercase">
             CESI Pau · Stage {profile.internship.from.split(' ').slice(1).join(' ')} → {profile.internship.to.split(' ').slice(1).join(' ')}
